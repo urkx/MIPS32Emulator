@@ -93,6 +93,13 @@ def ex(inst):
         param1 = inst[1].replace('$','').replace(',','')
         param2 = inst[2].replace('$','').replace(',','')
         REGS[REGS_DICT[param1]] = REGS[REGS_DICT[param2]]
+    elif inst[0] == 'slt':
+        param2 = REGS[REGS_DICT[inst[2].replace('$','').replace(',','')]]
+        param3 = REGS[REGS_DICT[inst[3].replace('$','').replace(',','')]]
+        if param2 < param3:
+            REGS[REGS_DICT[inst[1].replace('$','').replace(',','')]] = 1
+        else:
+            REGS[REGS_DICT[inst[1].replace('$','').replace(',','')]] = 0
     else:
         pass
 
@@ -109,7 +116,7 @@ def dump(f):
 
     for x in f:
         if x == '\t.text\n':
-            print('Program starts')
+            print('Program started')
             prgmStart = True
         elif prgmStart is True:
             inst = x.split()
@@ -120,5 +127,16 @@ def dump(f):
 if __name__ == '__main__':
     f = open(sys.argv[1], 'r')
     print('Loading program in memory...')
+    
+    # Initial test data 
+    REGS[4] = 1
+    REGS[5] = 2
+    
     dump(f)
     start()
+    print('program finished\n')
+    print('-----------------------------------')
+    print('-----------REGISTERS---------------')
+    print('-----------------------------------')
+    for i in range(32):
+        print(REGS[i])
