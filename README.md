@@ -3,5 +3,5 @@
 A MIPS32 emulator written in Python.
 
 ### TODO
-- Add full instructions set
+- Add full instruction set
 - Write some test programs
