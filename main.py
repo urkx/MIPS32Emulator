@@ -89,7 +89,10 @@ PC = 0
 IM = [] 
 
 def ex(inst):
-    if inst[0] == 'move':
+    if inst[0][-1] == ':':
+        global PC
+        REGS[REGS_DICT['ra']] = PC
+    elif inst[0] == 'move':
         param1 = inst[1].replace('$','').replace(',','')
         param2 = inst[2].replace('$','').replace(',','')
         REGS[REGS_DICT[param1]] = REGS[REGS_DICT[param2]]
@@ -98,8 +101,17 @@ def ex(inst):
         param3 = REGS[REGS_DICT[inst[3].replace('$','').replace(',','')]]
         if param2 < param3:
             REGS[REGS_DICT[inst[1].replace('$','').replace(',','')]] = 1
+            #global PC
+            PC+=1
         else:
             REGS[REGS_DICT[inst[1].replace('$','').replace(',','')]] = 0
+    elif inst[0] == 'jr':
+        #global PC
+        PC = int(REGS[REGS_DICT['ra']])
+    elif inst[0] == 'movn':
+        if REGS[REGS_DICT[inst[3].replace('$','').replace(',','')]] != 0:
+            REGS[REGS_DICT[inst[1].replace('$','').replace(',','')]] = REGS[REGS_DICT[inst[2].replace('$','').replace(',','')]]
+
     else:
         pass
 
@@ -129,12 +141,12 @@ if __name__ == '__main__':
     print('Loading program in memory...')
     
     # Initial test data 
-    REGS[4] = 1
+    REGS[4] = 1 
     REGS[5] = 2
     
     dump(f)
     start()
-    print('program finished\n')
+    print('Program finished\n')
     print('-----------------------------------')
     print('-----------REGISTERS---------------')
     print('-----------------------------------')
