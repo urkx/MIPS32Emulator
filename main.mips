@@ -1,0 +1,7 @@
+	.text
+asm_max:
+	move	$v0, $a0
+	slt	$t0, $a0, $a1
+	jr	$ra
+	movn	$v0, $a1, $t0
+	.end	asm_max
