@@ -88,29 +88,32 @@ PC = 0
 # Instructions memory
 IM = [] 
 
+def decRegs(inst):
+    code = inst[0]
+    params = []
+    for i in range(1, len(inst)):
+        reg = inst[i].replace('$','').replace(',','')
+        params.append(reg)
+    return code, params
+
 def ex(inst):
-    if inst[0][-1] == ':':
-        global PC
-        REGS[REGS_DICT['ra']] = PC
-    elif inst[0] == 'move':
-        param1 = inst[1].replace('$','').replace(',','')
-        param2 = inst[2].replace('$','').replace(',','')
-        REGS[REGS_DICT[param1]] = REGS[REGS_DICT[param2]]
-    elif inst[0] == 'slt':
-        param2 = REGS[REGS_DICT[inst[2].replace('$','').replace(',','')]]
-        param3 = REGS[REGS_DICT[inst[3].replace('$','').replace(',','')]]
-        if param2 < param3:
-            REGS[REGS_DICT[inst[1].replace('$','').replace(',','')]] = 1
-            #global PC
+    global PC
+    code, params = decRegs(inst)
+    if code[-1] == ':':
+        REGS[REGS_DICT['ra']] = PC 
+    elif code == 'move':
+        REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]]
+    elif code == 'slt':
+        if REGS[REGS_DICT[params[1]]] < REGS[REGS_DICT[params[2]]]:
+            REGS[REGS_DICT[params[0]]] = 1
             PC+=1
         else:
-            REGS[REGS_DICT[inst[1].replace('$','').replace(',','')]] = 0
-    elif inst[0] == 'jr':
-        #global PC
+            REGS[REGS_DICT[params[0]]] = 0
+    elif code == 'jr':
         PC = int(REGS[REGS_DICT['ra']])
-    elif inst[0] == 'movn':
-        if REGS[REGS_DICT[inst[3].replace('$','').replace(',','')]] != 0:
-            REGS[REGS_DICT[inst[1].replace('$','').replace(',','')]] = REGS[REGS_DICT[inst[2].replace('$','').replace(',','')]]
+    elif code == 'movn':
+        if REGS[REGS_DICT[params[2]]] != 0:
+            REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]]
 
     else:
         pass
