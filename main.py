@@ -100,9 +100,46 @@ def ex(inst):
     global PC
     code, params = decRegs(inst)
     if code[-1] == ':':
-        REGS[REGS_DICT['ra']] = PC 
+        REGS[REGS_DICT['ra']] = PC
+    elif code == 'add' or code == 'addu':
+        # TODO: overflow and signed/unsigned
+        REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]] + REGS[REGS_DICT[params[2]]]
+    elif code == 'addi' or code == 'addiu': 
+        REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]] + int(params[2])
+    elif code == 'clo':
+        aux = "{0:b}".format(int(REGS[REGS_DICT[params[1]]]))
+        count = 0
+        for x in aux:
+            if x == '1':
+                count += 1
+        REGS[REGS_DICT[params[0]]] = count
+    elif code == 'clz':
+        aux = "{0:b}".format(int(REGS[REGS_DICT[params[1]]]))
+        count = 0
+        for x in aux:
+            if x == '0':
+                count += 1
+        REGS[REGS_DICT[params[0]]] = count
+    elif code == 'la':
+        # TODO: how tf can I implement addresses
+        pass
+    elif code == 'li':
+        REGS[REGS_DICT[params[0]]] = int(params[1])
+    elif code == 'lui':
+        REGS[REGS_DICT[params[0]]] = int(params[1]) << 16
     elif code == 'move':
         REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]]
+    elif code == 'negu':
+        REGS[REGS_DICT[params[0]]] = int(REGS[REGS_DICT[params[1]]]) * -1
+    elif code == 'seb':
+        # MIPS32 Release 2 instruction
+        pass
+    elif code == 'seh':
+        # MIPS32 Release 2 instruction
+        pass
+    elif code == 'sub' or code == 'subu':
+        # TODO: overflow and signed/unsigned
+        REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]] - REGS[REGS_DICT[params[2]]]
     elif code == 'slt':
         if REGS[REGS_DICT[params[1]]] < REGS[REGS_DICT[params[2]]]:
             REGS[REGS_DICT[params[0]]] = 1
@@ -142,10 +179,6 @@ def dump(f):
 if __name__ == '__main__':
     f = open(sys.argv[1], 'r')
     print('Loading program in memory...')
-    
-    # Initial test data 
-    REGS[4] = 1 
-    REGS[5] = 2
     
     dump(f)
     start()
