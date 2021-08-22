@@ -107,14 +107,14 @@ def ex(inst):
     elif code == 'addi' or code == 'addiu': 
         REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]] + int(params[2])
     elif code == 'clo':
-        aux = "{0:b}".format(int(REGS[REGS_DICT[params[1]]]))
+        aux = "{:032b}".format(int(REGS[REGS_DICT[params[1]]]))
         count = 0
         for x in aux:
             if x == '1':
                 count += 1
         REGS[REGS_DICT[params[0]]] = count
     elif code == 'clz':
-        aux = "{0:b}".format(int(REGS[REGS_DICT[params[1]]]))
+        aux = "{:032b}".format(int(REGS[REGS_DICT[params[1]]]))
         count = 0
         for x in aux:
             if x == '0':
@@ -140,6 +140,26 @@ def ex(inst):
     elif code == 'sub' or code == 'subu':
         # TODO: overflow and signed/unsigned
         REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]] - REGS[REGS_DICT[params[2]]]
+    elif code == 'rotr':
+        # MIPS32 Release 2 instruction
+        pass
+    elif code == 'rotrv':
+        # MIPS32 Release 2 instruction
+        pass
+    elif code == 'sll':
+        REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]] << int(params[2])
+    elif code == 'sllv':
+        aux = "{:032b}".format(int(REGS[REGS_DICT[params[2]]]))
+        shift = int(aux[len(aux)-5:len(aux)], 2)
+        REGS[REGS_DICT[params[0]]] = int(REGS[REGS_DICT[params[1]]]) << shift
+    elif code == 'sra' or code == 'srl':
+        # TODO: signed/unsigned
+        REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]] >> int(params[2])
+    elif code == 'srav' or code == 'srlv':
+        # TODO: signed/unsigned
+        aux = "{:032b}".format(int(REGS[REGS_DICT[params[2]]]))
+        shift = int(aux[len(aux)-5:len(aux)], 2)
+        REGS[REGS_DICT[params[0]]] = int(REGS[REGS_DICT[params[1]]]) >> shift
     elif code == 'slt':
         if REGS[REGS_DICT[params[1]]] < REGS[REGS_DICT[params[2]]]:
             REGS[REGS_DICT[params[0]]] = 1

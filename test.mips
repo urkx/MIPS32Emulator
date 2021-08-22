@@ -1,4 +1,4 @@
 	.text
 	li	$a0, 1
 	li	$a1, 5
-	clz 	$a3, $a1
+	sllv 	$a3, $a0, $a1 
