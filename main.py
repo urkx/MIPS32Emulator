@@ -160,6 +160,31 @@ def ex(inst):
         aux = "{:032b}".format(int(REGS[REGS_DICT[params[2]]]))
         shift = int(aux[len(aux)-5:len(aux)], 2)
         REGS[REGS_DICT[params[0]]] = int(REGS[REGS_DICT[params[1]]]) >> shift
+    elif code == 'and':
+        REGS[REGS_DICT[params[0]]] = int(REGS[REGS_DICT[params[1]]]) & int(REGS[REGS_DICT[params[2]]])
+    elif code == 'andi':
+        REGS[REGS_DICT[params[0]]] = int(REGS[REGS_DICT[params[1]]]) & int(params[2])
+    elif code == 'ext':
+        # MIPS32 Release 2 instruction
+        pass
+    elif code == 'ins':
+        # MIPS32 Release 2 instruction
+        pass
+    elif code == 'nor':
+        REGS[REGS_DICT[params[0]]] = (~int(REGS[REGS_DICT[params[1]]]) | ~int(REGS[REGS_DICT[params[2]]])) 
+    elif code == 'not':
+        REGS[REGS_DICT[params[0]]] = ~int(REGS[REGS_DICT[params[1]]])
+    elif code == 'or':
+        REGS[REGS_DICT[params[0]]] = (int(REGS[REGS_DICT[params[1]]]) | int(REGS[REGS_DICT[params[2]]]))
+    elif code == 'ori':
+        REGS[REGS_DICT[params[0]]] = (int(REGS[REGS_DICT[params[1]]]) | int(params[2])) 
+    elif code == 'wsbh':
+        # MIPS32 Release 2 instruction
+        pass
+    elif code == 'xor':
+        REGS[REGS_DICT[params[0]]] = (int(REGS[REGS_DICT[params[1]]]) ^ int(REGS[REGS_DICT[params[2]]]))
+    elif code == 'xori':
+        REGS[REGS_DICT[params[0]]] = (int(REGS[REGS_DICT[params[1]]]) ^ int(params[2])) 
     elif code == 'slt':
         if REGS[REGS_DICT[params[1]]] < REGS[REGS_DICT[params[2]]]:
             REGS[REGS_DICT[params[0]]] = 1
