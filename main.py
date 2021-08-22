@@ -185,18 +185,28 @@ def ex(inst):
         REGS[REGS_DICT[params[0]]] = (int(REGS[REGS_DICT[params[1]]]) ^ int(REGS[REGS_DICT[params[2]]]))
     elif code == 'xori':
         REGS[REGS_DICT[params[0]]] = (int(REGS[REGS_DICT[params[1]]]) ^ int(params[2])) 
-    elif code == 'slt':
+    elif code == 'movn':
+        if REGS[REGS_DICT[params[2]]] != 0:
+            REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]]
+    elif code == 'movz':
+        if REGS[REGS_DICT[params[2]]] == 0:
+            REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]]
+    elif code == 'slt' or code == 'sltu':
+        # TODO: signed/unsigned
         if REGS[REGS_DICT[params[1]]] < REGS[REGS_DICT[params[2]]]:
+            REGS[REGS_DICT[params[0]]] = 1
+            PC+=1
+        else:
+            REGS[REGS_DICT[params[0]]] = 0
+    elif code == 'slti' or code == 'sltiu':
+        # TODO: signed/unsigned
+        if REGS[REGS_DICT[params[1]]] < int(params[2]):
             REGS[REGS_DICT[params[0]]] = 1
             PC+=1
         else:
             REGS[REGS_DICT[params[0]]] = 0
     elif code == 'jr':
         PC = int(REGS[REGS_DICT['ra']])
-    elif code == 'movn':
-        if REGS[REGS_DICT[params[2]]] != 0:
-            REGS[REGS_DICT[params[0]]] = REGS[REGS_DICT[params[1]]]
-
     else:
         pass
 
