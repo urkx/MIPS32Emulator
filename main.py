@@ -241,5 +241,6 @@ if __name__ == '__main__':
     print('-----------------------------------')
     print('-----------REGISTERS---------------')
     print('-----------------------------------')
+    regs_dict_list = [x[0] for x in list(REGS_DICT.items())]
     for i in range(32):
-        print(REGS[i])
+        print(f"{regs_dict_list[i]}: {REGS[i]}")
